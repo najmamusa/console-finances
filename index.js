@@ -87,53 +87,88 @@ var finances = [
   ['Feb-2017', 671099],
 ];
 
-console.log("Financial Analysis")         //Display heading 
-console.log("-------------------------")
 
-let totalMonths = finances.length;   
+// Objective: Determine the overall number of months within the dataset.
+// Solution: Since each element in the finance array corresponds to a month, the array's length directly represents the total number of months.
+let totalMonths = financesArr.length;
 
-console.log("Total months: " + totalMonths);
 
-let netTotalProfitLoss = 0;
-for (let i = 0; i < totalMonths; i++) {
-
-  netTotalProfitLoss += finances[i][1];
+// Objective: Calculate the cumulative net amount of Profit/Losses throughout the entire period.
+// Solution: This involves summing up the numerical values in each element.
+let netProfitLoss = 0;
+for(let i = 0; i < totalMonths; i++)
+{
+    netProfitLoss += financesArr[i][1];
 }
 
-console.log("The Net Total Profit/Loss: " + netTotalProfitLoss);
 
-let dateReversed = [];
+// Objective: Determine the average of Profit/Loss changes throughout the entire period.
+/* To achieve this, monitor the total change in Profit/Loss from month to month and then calculate the average.
+(Total / (Number of months - 1)) */
+// Solution: Calculate the total difference in profit/loss for each consecutive month and then divide that total by the number of differences to obtain the average.
 
-let amountReversed = [];
+let avg = 0; //Average Change: -2315.12
+let avgArr = [];
+for (let i = 1; i < totalMonths; i++) 
+{
+    let difference = financesArr[i][1]-financesArr[i-1][1];
+    avg += difference;
+    avgArr.push(difference);
+}
+avg = avg/avgArr.length;
 
-for (let i = totalMonths - 1; i >= 0; i--) {
-  const[date, amount] = finances[i];
+// Objective: Identify the highest increase in Profit/Losses (both date and amount) throughout the entire period.
+// Solution: The default value for the greatest increase is set to -Infinity. If no increase is detected, the greatest increase remains at -Infinity. Otherwise, the loop continuously updates and displays the highest increase encountered by its conclusion.
 
-  dateReversed.push(date)
-
-  amountReversed.push(amount);
+let monthIncrease = [];
+let greatestIncrease = -Infinity;
+for (let i = 1; i < totalMonths; i++){
+    let month = financesArr[i][0];
+    let difference = financesArr[i][1] - financesArr[i-1][1];
+    if(greatestIncrease < difference){
+        greatestIncrease = difference;
+        monthIncrease = [month, difference];
+    }
 }
 
-let avgChanges =[]
+// Objective: Identify the most significant decrease in Profit/Losses (both date and amount) throughout the entire period.
+// Solution: The default value for the greatest decrease is set to Infinity. If no decrease is observed, the greatest decrease remains at Infinity. Otherwise, the loop continuously updates and displays the greatest decrease encountered by its conclusion.
 
-let totalAvgChanges = 0
-
-for (let i = 0; i < totalMonths - 1; i++) {
-  avgChanges.push(amountReversed[i] - amountReversed[i+1]);
-
-  totalAvgChanges += avgChanges[i];
+let monthDecrease = [];
+let greatestDecrease = Infinity;
+for (let i = 1; i < totalMonths; i++){
+    let month = financesArr[i][0]
+    let difference = financesArr[i][1] - financesArr[i-1][1];
+    if(greatestDecrease > difference){
+        greatestDecrease = difference;
+        monthDecrease = [month, difference];
+    }
 }
 
-let totalAvgProfitLoss = totalAvgChanges / avgChanges.length;
+// Objective: Your final code should print the analysis to the console.
+ /*
+Financial Analysis 
+----------------
+Total Months: 86
+Total: $38382578
+Average Change: -2315.12
+Greatest Increase in Profits/Losses: Feb-2012 ($1926159)
+Greatest Decrease in Profits/Losses: Sep-2013 ($-2196167)  
+*/
+let options = {
+  style: "currency", 
+  currency: "USD", 
+  minimumFractionDigits: 0, 
+  maximumFractionDigits:2
+}
 
-console.log("Average change: " + totalAvgProfitLoss.toFixed(2));
-
-let greatestProfitAmount = Math.max(...avgChanges);
-
-console.log("Greatest increase in profits: " + greatestProfitDate + " ($"+ greatestProfitAmount + ")")
-
-let greatestLossAmount = Math.min(...avgChanges);
-
-greatestLossDate = dateReversed[41];
-
-console.log("Greatest Decrease Profits: " + greatestLossDate + " ($" + greatestLossAmount + ")" )
+console.log(
+  `Financial Analysis
+  ----------------
+  Total Months: ${totalMonths}
+  Total: ${netProfitLoss.toLocaleString("en-US", options)}
+  Average Change: ${avg.toLocaleString("en-US", options)}
+  Greatest Increase in Profits/Losses: ${monthIncrease[0]} (${monthIncrease[1].toLocaleString("en-US", options)})
+  Greatest Decrease in Profits/Losses: ${monthDecrease[0]} (${monthDecrease[1].toLocaleString("en-US", options)})`
+  );
+  
