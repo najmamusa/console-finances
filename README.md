@@ -7,7 +7,7 @@ This repository applies the principles acquired in fundamental JavaScript to sol
 I struggled with directly analyzing a 2D array, so I took a longer route. I split the data into two arrays, performed operations, and then used indices to get the values. This was due to my limited knowledge and the absence of information on finding the average of differences in a 2D array without using functions, which is beyond the project's scope. I found info on column averages but not for differences.
 
 ## Usage 
-The analysis can be accessed from this link: https://russkinori.github.io/Console-Finances/. Please see below for instructions and screenshots.
+The analysis can be accessed from this link: https://najmamusa.github.io/console-finances/. Please see below for instructions and screenshots.
 
 Once the webpage has opened, right click anywhere within its body and select Inspect as seen below.
 
